@@ -7,8 +7,8 @@ from typing import Optional, Dict, Any
 class DeepSeekAPI:
     def __init__(self, config_file: str = "config.ini"):
         """
-        初始化DeepSeek API客户端
-        :param config_file: 配置文件路径
+        Initialize the DeepSeek API client
+        :param config_file: Configuration file path
         """
         self.config = configparser.ConfigParser()
         self.config.read(config_file, encoding='utf-8')
@@ -28,12 +28,12 @@ class DeepSeekAPI:
     
     def chat_completion(self, messages: list, model: str = None, max_tokens: int = None, temperature: float = None) -> Optional[Dict[Any, Any]]:
         """
-        调用DeepSeek聊天完成API
-        :param messages: 消息列表，格式为[{"role": "user", "content": "消息内容"}, ...]
-        :param model: 使用的模型，默认为配置文件中的模型
-        :param max_tokens: 最大输出token数，默认为配置文件中的值
-        :param temperature: 温度参数，控制输出随机性，默认为配置文件中的值
-        :return: API响应的字典
+        Call the DeepSeek chat completion API
+        :param messages: Message list, format is [{"role": "user", "content": "message content"}, ...]
+        :param model: Model to use, defaults to the model in the configuration file
+        :param max_tokens: Maximum output token count, defaults to the value in the configuration file
+        :param temperature: Temperature parameter, controls output randomness, defaults to the value in the configuration file
+        :return: Dictionary of API response
         """
         url = f"{self.base_url}/chat/completions"
         
@@ -51,19 +51,19 @@ class DeepSeekAPI:
         
         try:
             response = requests.post(url, headers=self.headers, json=payload)
-            response.raise_for_status()  # 检查HTTP错误
+            response.raise_for_status()  # Check HTTP errors
             return response.json()
         except requests.exceptions.RequestException as e:
-            print(f"请求错误: {e}")
+            print(f"Request error: {e}")
             return None
         except json.JSONDecodeError as e:
-            print(f"JSON解析错误: {e}")
+            print(f"JSON parsing error: {e}")
             return None
     
     def get_models(self) -> Optional[Dict[Any, Any]]:
         """
-        获取可用模型列表
-        :return: 模型列表的字典
+        Get list of available models
+        :return: Dictionary of model list
         """
         url = f"{self.base_url}/models"
         
@@ -72,10 +72,10 @@ class DeepSeekAPI:
             response.raise_for_status()
             return response.json()
         except requests.exceptions.RequestException as e:
-            print(f"请求错误: {e}")
+            print(f"Request error: {e}")
             return None
         except json.JSONDecodeError as e:
-            print(f"JSON解析错误: {e}")
+            print(f"JSON parsing error: {e}")
             return None
 
 
@@ -83,40 +83,40 @@ def main():
     # 创建API客户端实例
     client = DeepSeekAPI()
     
-    # 示例1: 获取可用模型列表
-    print("获取可用模型列表...")
+    # Example 1: Get available model list
+    print("Getting available model list...")
     models = client.get_models()
     if models:
-        print("可用模型:")
+        print("Available models:")
         for model in models.get('data', []):
             print(f"- {model['id']}")
     else:
-        print("获取模型列表失败")
+        print("Failed to get model list")
     
     print("\n" + "="*50 + "\n")
     
-    # 示例2: 聊天完成
-    print("进行聊天完成测试...")
+    # Example 2: Chat completion
+    print("Performing chat completion test...")
     messages = [
-        {"role": "system", "content": "你是一个有用的助手。"},
-        {"role": "user", "content": "你好，简单介绍一下DeepSeek模型的特点，不超过200字。"}
+        {"role": "system", "content": "You are a helpful assistant."},
+        {"role": "user", "content": "Hello, briefly introduce the features of DeepSeek models in less than 200 words."}
     ]
     
     response = client.chat_completion(messages)
     if response:
         choice = response.get('choices', [{}])[0]
         message = choice.get('message', {})
-        print(f"助手回复: {message.get('content', '未获取到回复内容')}")
+        print(f"Assistant response: {message.get('content', 'No response content received')}")
     else:
-        print("聊天完成请求失败")
+        print("Chat completion request failed")
     
     print("\n" + "="*50 + "\n")
     
-    # 示例3: 自定义对话
-    print("自定义对话示例...")
+    # Example 3: Custom conversation
+    print("Custom conversation example...")
     custom_messages = [
-        {"role": "system", "content": "你是一个编程助手，专门帮助解决编程问题。"},
-        {"role": "user", "content": "用Python写一个快速排序算法，不超过500字符。"}
+        {"role": "system", "content": "You are a programming assistant, specializing in helping solve programming problems."},
+        {"role": "user", "content": "Write a quick sort algorithm in Python, no more than 500 characters."}
     ]
     
     response = client.chat_completion(
@@ -128,28 +128,28 @@ def main():
     if response:
         choice = response.get('choices', [{}])[0]
         message = choice.get('message', {})
-        print(f"编程助手回复:\n{message.get('content', '未获取到回复内容')}")
+        print(f"Programming assistant response:\n{message.get('content', 'No response content received')}")
     else:
-        print("自定义对话请求失败")
+        print("Custom conversation request failed")
     
     print("\n" + "="*50 + "\n")
     
-    # 示例4: 使用默认配置参数
-    print("使用默认配置参数...")
+    # Example 4: Using default configuration parameters
+    print("Using default configuration parameters...")
     config_messages = [
-        {"role": "system", "content": "你是一个知识渊博的助手。"},
-        {"role": "user", "content": "请简要说明人工智能的三个主要分支，不超过500个字。"}
+        {"role": "system", "content": "You are a knowledgeable assistant."},
+        {"role": "user", "content": "Briefly explain the three main branches of artificial intelligence in less than 500 words."}
     ]
     
-    # 不提供参数，使用配置文件中的默认值
+    # Don't provide parameters, use default values from configuration file
     response = client.chat_completion(config_messages)
     
     if response:
         choice = response.get('choices', [{}])[0]
         message = choice.get('message', {})
-        print(f"知识助手回复:\n{message.get('content', '未获取到回复内容')}")
+        print(f"Knowledge assistant response:\n{message.get('content', 'No response content received')}")
     else:
-        print("使用默认配置请求失败")
+        print("Request with default configuration failed")
 
 
 if __name__ == "__main__":
