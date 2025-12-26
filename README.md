@@ -1,35 +1,35 @@
 # AI_Connector
 
-这是一个连接各种AI大模型的客户端程序，其中包含调用DeepSeek API服务的示例代码，将会不断添加其他大模型API的调用示例，并逐步形成类似AI Agent的功能。
+This is a client program that connects to various AI large models, including sample code for calling the DeepSeek API service. It will continuously add examples for calling other large model APIs and gradually form AI Agent-like functionality.
 
-## 使用方法
+## Usage
 
-1. 在[config.ini](file:///C:/Users/delon/PycharmProjects/AI_Connector/config.ini)文件中填入你的DeepSeek API密钥：
+1. Enter your DeepSeek API key in the [config.ini](file:///C:/Users/delon/PycharmProjects/AI_Connector/config.ini) file:
    ```
    [deepseek]
    api_key = your_actual_deepseek_api_key_here
    base_url = https://api.deepseek.com
    ```
 
-2. 安装依赖：
+2. Install dependencies:
    ```
    pip install -r requirements.txt
    ```
 
-3. 运行程序：
+3. Run the program:
    ```
    python deepseek_client.py
    ```
 
-## 功能
+## Features
 
-- 获取可用模型列表
-- 调用聊天完成API
-- 支持自定义对话参数（模型、最大token数、温度等）
+- Get list of available models
+- Call chat completion API
+- Support for custom conversation parameters (model, max tokens, temperature, etc.)
 
-## API密钥获取
+## API Key Acquisition
 
-要使用DeepSeek API，你需要：
-1. 访问DeepSeek官方网站注册账户
-2. 在开发者面板中获取API密钥
-3. 将API密钥填入配置文件中
+To use the DeepSeek API, you need to:
+1. Register an account on the DeepSeek official website
+2. Obtain an API key from the developer panel
+3. Enter the API key in the configuration file
