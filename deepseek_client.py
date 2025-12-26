@@ -1,3 +1,4 @@
+
 import requests
 import json
 import configparser
@@ -16,7 +17,7 @@ class DeepSeekAPI:
         self.api_key = self.config.get('deepseek', 'api_key')
         self.base_url = self.config.get('deepseek', 'base_url')
         
-        # 从配置文件中读取模型参数默认值
+        # Read default model parameters from configuration file
         self.default_model = self.config.get('model_params', 'model', fallback='deepseek-chat')
         self.default_max_tokens = self.config.getint('model_params', 'max_tokens', fallback=1000)
         self.default_temperature = self.config.getfloat('model_params', 'temperature', fallback=0.7)
@@ -37,7 +38,7 @@ class DeepSeekAPI:
         """
         url = f"{self.base_url}/chat/completions"
         
-        # 使用传入的参数，如果未提供则使用配置文件中的默认值
+        # Use the passed parameters, if not provided, use default values from configuration file
         model = model or self.default_model
         max_tokens = max_tokens or self.default_max_tokens
         temperature = temperature or self.default_temperature
@@ -80,7 +81,7 @@ class DeepSeekAPI:
 
 
 def main():
-    # 创建API客户端实例
+    # Create API client instance
     client = DeepSeekAPI()
     
     # Example 1: Get available model list
